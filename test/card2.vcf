@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Contact;;;
+UID:edaf8afa-11c9-43a2-b17e-dbf4af9d6473@178.62.218.194
+REV:2014-12-10T14:20:20+00:00
+FN:Contact
+PRODID:-//ownCloud//NONSGML Contacts 0.3.0.18//EN
+ORG:Some
+TEL;TYPE=HOME:78987854546
+NICKNAME:SomeNick
+URL;TYPE=WORK:akitov.info
+TITLE:Super title
+IMPP;X-SERVICE-TYPE=SKYPE:skype:kitov.nn
+ADR;TYPE=WORK:;;Kovaliha;Nizhniy Novgorod;Nizhegorodsk;603006;Россия
+NOTE:Long note about contact
+END:VCARD
