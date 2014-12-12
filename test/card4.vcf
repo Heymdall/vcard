@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:4.0
+N:Bloggs;Joe;;;
+FN:Joe Bloggs
+EMAIL;TYPE=HOME;PREF=1:me@joebloggs.com
+TEL;TYPE="CELL,HOME";PREF=1:tel:+44 20 1234 5678
+ADR;TYPE=HOME;PREF=1:;;1 Trafalgar Square;London;;WC2N;United Kingdom
+URL;TYPE=HOME;PREF=1:http://joebloggs.com
+IMPP;TYPE=HOME;PREF=1:skype:joe.bloggs
+X-SOCIALPROFILE;TYPE=HOME;PREF=1:twitter:http://twitter.com/joebloggs
+END:VCARD
