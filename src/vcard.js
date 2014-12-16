@@ -46,6 +46,7 @@
         var Re2 = /^([^:;]+);([^:]+):(.+)$/;
         var ReKey = /item\d{1,2}\./;
         var fields = {};
+        var prevField = null;
 
         input.split(/\r\n|\r|\n/).forEach(function (line) {
             var results, key;
@@ -54,6 +55,7 @@
                 results = line.match(Re1);
                 key = results[1].toLowerCase().trim();
                 fields[key] = results[2];
+                prevField = null;
             } else if (Re2.test(line)) {
                 results = line.match(Re2);
                 key = results[1].replace(ReKey, '').toLowerCase().trim();
@@ -78,6 +80,13 @@
                     meta: meta,
                     value: results[3].split(';')
                 });
+                prevField = {
+                    key: key,
+                    index: fields[key].length - 1
+                };
+            } else if (prevField && prevField.key == 'photo' && line != 'END:VCARD') {
+                fields[prevField.key][prevField.index].value += line.trim();
+                //console.log('line not match', prevField);
             }
         });
 
