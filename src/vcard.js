@@ -1,8 +1,9 @@
 (function (namespace) {
-    function VCard(fields) {
+    function VCard(fields, url) {
         Object.keys(fields).forEach(function (prop) {
             this[prop] = fields[prop];
         }.bind(this));
+        this._url = url ? url : '';
     }
 
     /**
@@ -18,7 +19,9 @@
 
         for (var prop in this) {
             if (typeof this[prop] === 'string') {
-                lines.push(prop.toUpperCase() + ':' + this[prop]);
+                if (prop[0] !== '_') {
+                    lines.push(prop.toUpperCase() + ':' + this[prop]);
+                }
             } else if (typeof this[prop] !== 'function') {
                 this[prop].forEach(function (property) {
                     var meta = [];
@@ -86,7 +89,6 @@
                 };
             } else if (prevField && prevField.key == 'photo' && line != 'END:VCARD') {
                 fields[prevField.key][prevField.index].value += line.trim();
-                //console.log('line not match', prevField);
             }
         });
 
