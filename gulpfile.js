@@ -12,7 +12,7 @@ gulp.task('build', function () {
 });
 
 gulp.task('test', function () {
-  return gulp.src('test/vcard.spec.js')
+  return gulp.src('test/vcard2.spec.js')
     .pipe(jasmine());
 });
 

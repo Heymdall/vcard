@@ -1,0 +1,42 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//Mac OS X 10.10//EN
+N:LastName;FirstName;;;
+FN:FirstName LastName
+ORG:CompanyName;
+EMAIL;type=INTERNET;type=HOME;type=pref:home@mail.com
+EMAIL;type=INTERNET;type=WORK:work@email.com
+item1.EMAIL;type=INTERNET:other@email.com
+item1.X-ABLabel:_$!<Other>!$_
+item2.EMAIL;type=INTERNET:custom@email.com
+item2.X-ABLabel:custom
+TEL;type=CELL;type=VOICE;type=pref:777897987
+TEL;type=IPHONE;type=CELL;type=VOICE:4564564464
+TEL;type=HOME;type=VOICE:4564564564654
+TEL;type=WORK;type=VOICE:7897897779
+TEL;type=MAIN:1214654564
+TEL;type=HOME;type=FAX:123121545644
+TEL;type=WORK;type=FAX:456488789797897
+TEL;type=OTHER;type=FAX:74113245
+TEL;type=PAGER:147258
+TEL;type=OTHER;type=VOICE:123456
+item3.TEL:74115456
+item3.X-ABLabel:Custom
+ADR;type=HOME;type=pref:;;Street name;City;Regiaon;603000;country
+NOTE:Note about this contact
+item4.URL;type=pref:homepageurl.com
+item4.X-ABLabel:_$!<HomePage>!$_
+URL;type=HOME:homeurl.com
+URL;type=WORK:workurl.com
+item5.URL:otherurl.com
+item5.X-ABLabel:_$!<Other>!$_
+item6.URL:customurl.com
+item6.X-ABLabel:custom
+PHOTO;ENCODING=b;TYPE=JPEG:/9j/4AAQSkZJRgABAQEASABIAAD/4QBARXhpZgAATU0AKgAA
+ AAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAABQKADAAQAAAABAAABQAAAAAD/7QA4UG
+ hvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/+IO
+ aElDQ19QUk9GSUxFAAEBAAAOWGFwcGwCEAAAbW50clJHQiBYWVogB94ADAANAA8AEwAtYWNzcE
+BDAY:1991-04-22
+UID:fc645de1-a704-4bde-ae5f-b3b42868c74f
+X-ABUID:ED20CAE6-A33C-439D-B3CE-609D4183FA64:ABPerson
+END:VCARD
