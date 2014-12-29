@@ -5,7 +5,7 @@ Simple js vCard parser/generator.
 
 ** Example of usage:
 
-'''javascript
+```javascript
 var raw = 'BEGIN:VCARD\r\n' +
           'FN:Forrest Gump\r\n' +
           'N:Gump;Forrest;;Mr.;\r\n' +
@@ -28,4 +28,4 @@ expect(card.tel).toEqual([
 var generated = vCard.generate(card);
 
 expect(generated).toEqual(raw);
-'''
+```
