@@ -1,8 +1,8 @@
-var vCard = require('../src/vcard');
+var vCard = require('../src/vcard').vCard;
 
 describe('vCard.parse', function () {
     it('Should ignore vCard start and end tags', function () {
-        var raw = 'BEGIN:VCARD\nEND:VCARD',
+        var raw = 'BEGIN:VCARD\r\nEND:VCARD',
             card = vCard.parse(raw);
 
         expect(card).toEqual({});
