@@ -1,21 +1,22 @@
 {
-    "name": "vcard",
-    "version": "0.0.3",
-    "description": "Simple vCard parser",
-    "main": "src/vcard.js",
-    "directories": {
-        "test": "test"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "gulp": "^3.8.10",
-        "gulp-jasmine": "^1.0.1",
-        "gulp-rename": "^1.2.0",
-        "gulp-uglify": "^1.0.2"
-    },
-    "scripts": {
-        "test": "gulp test"
-    },
-    "author": "Aleksandr Kitov <kitov.nn@gmail.com>",
-    "license": "MIT"
+  "name": "vcard",
+  "version": "0.0.3",
+  "description": "Simple vCard parser",
+  "main": "src/vcard.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-jasmine": "^1.0.1",
+    "gulp-mocha": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.0.2"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "Aleksandr Kitov <kitov.nn@gmail.com>",
+  "license": "MIT"
 }

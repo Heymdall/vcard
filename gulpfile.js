@@ -12,8 +12,12 @@ gulp.task('build', function () {
 });
 
 gulp.task('test', function () {
-  return gulp.src('test/vcard2.spec.js')
+  return gulp.src('test/vcard.*.spec.js')
     .pipe(jasmine());
+});
+
+gulp.task('dev', function () {
+  gulp.watch(['test/*', 'src/*.js'], ['test']);
 });
 
 gulp.task('default', ['test', 'build']);

@@ -1,100 +1,143 @@
-(function (namespace) {
-    function VCard(fields, url) {
-        Object.keys(fields).forEach(function (prop) {
-            this[prop] = fields[prop];
-        }.bind(this));
-        this._url = url ? url : '';
-    }
+var PREFIX = 'BEGIN:VCARD',
+    POSTFIX = 'END:VCARD';
 
-    /**
-     * Возвращает VCard представление
-     * @returns {string}
-     */
-    VCard.prototype.getCard = function () {
-        var prefix = 'BEGIN:VCARD',
-            postfix = 'END:VCARD',
-            lines = [];
+function parse(string) {
+    var result = {},
+        lines = string.split(/\r\n|\r|\n/),
+        count = lines.length,
+        pieces,
+        key,
+        value,
+        meta,
+        namespace;
 
-        lines.push(prefix);
+    for (var i = 0; i < count; i++) {
+        if (lines[i] == '') {
+            continue;
+        }
+        if (lines[i].toUpperCase() == PREFIX || lines[i].toUpperCase() == POSTFIX) {
+            continue;
+        }
+        pieces = lines[i].split(':');
+        key = pieces[0];
+        value = pieces[1];
+        namespace = false;
+        meta = {};
 
-        for (var prop in this) {
-            if (typeof this[prop] === 'string') {
-                if (prop[0] !== '_') {
-                    lines.push(prop.toUpperCase() + ':' + this[prop]);
-                }
-            } else if (typeof this[prop] !== 'function') {
-                this[prop].forEach(function (property) {
-                    var meta = [];
-                    for (var metaName in property.meta) {
-                        meta.push(metaName.toUpperCase() + '=' + property.meta[metaName].toUpperCase());
-                    }
-                    lines.push(prop.toUpperCase() + ';' + meta.join(';') + ':' + property.value.join(';'));
-                });
+        /**
+         * Check that next line continues current
+         * @param {number} i
+         * @returns {boolean}
+         */
+        var isValueContinued = function (i) {
+            return i + 1 < count && (lines[i + 1][0] == ' ' || lines[i + 1][0] == '\t');
+        };
+        // handle multiline properties (i.e. photo).
+        // next line should start with space or tab character
+        if (isValueContinued(i)) {
+            while (isValueContinued(i)) {
+                value += lines[i + 1].trim();
+                i++;
             }
         }
 
-        lines.push(postfix);
+        // meta fields in property
+        if (key.match(/;/)) {
+            var metaArr = key.split(';');
+            key = metaArr.shift();
+            metaArr.forEach(function (item) {
+                var arr = item.split('=');
+                arr[0] = arr[0].toLowerCase();
+                if (meta[arr[0]]) {
+                    meta[arr[0]].push(arr[1]);
+                } else {
+                    meta[arr[0]] = [arr[1]];
+                }
+            });
+        }
 
-        return lines.join("\n").trim();
-    };
+        // semicolon-separated values
+        if (value.match(/;/)) {
+            value = value.split(';');
+        }
 
-    /**
-     * Разбирает VCard представление
-     * @param {string} input Строка VCard
-     * @param {string} url
-     * @returns {VCard}
-     */
-    VCard.parse = function (input, url) {
-        var Re1 = /^(version|fn|title|org|nickname|note|uid|n|rev|prodid):(.+)$/i;
-        var Re2 = /^([^:;]+);([^:]+):(.+)$/;
-        var ReKey = /item\d{1,2}\./;
-        var fields = {};
-        var prevField = null;
+        // Grouped properties
+        if (key.match(/\./)) {
+            var arr = key.split('.');
+            key = arr[1];
+            namespace = arr[0];
+        }
 
-        input.split(/\r\n|\r|\n/).forEach(function (line) {
-            var results, key;
+        var newValue = {
+            value: value
+        };
+        if (Object.keys(meta).length) {
+            newValue.meta = meta;
+        }
+        if (namespace) {
+            newValue.namespace = namespace;
+        }
 
-            if (Re1.test(line)) {
-                results = line.match(Re1);
-                key = results[1].toLowerCase().trim();
-                fields[key] = results[2];
-                prevField = null;
-            } else if (Re2.test(line)) {
-                results = line.match(Re2);
-                key = results[1].replace(ReKey, '').toLowerCase().trim();
+        key = key.toLowerCase();
 
-                var meta = {};
-                results[2].split(';')
-                    .map(function (p, i) {
-                        var match = p.match(/([a-z\-]+)=(.*)/i);
-                        if (match) {
-                            return [match[1], match[2]];
-                        } else {
-                            return ['TYPE' + (i === 0 ? '' : i), p];
-                        }
-                    })
-                    .forEach(function (p) {
-                        meta[p[0].toLowerCase()] = p[1].toLowerCase();
+        if (typeof result[key] === 'undefined') {
+            result[key] = [newValue];
+        } else {
+            result[key].push(newValue);
+        }
+
+    }
+
+    return result;
+}
+
+function generate(data) {
+    var lines = [PREFIX],
+        line = '';
+
+    Object.keys(data).forEach(function (key) {
+        data[key].forEach(function (value) {
+            line = '';
+            if (value.namespace) {
+                line += value.namespace + '.';
+            }
+            line += key.toUpperCase();
+
+            if (value.meta) {
+                Object.keys(value.meta).forEach(function (metaKey) {
+                    value.meta[metaKey].forEach(function (metaValue) {
+                        line += ';' + metaKey.toUpperCase() + '=' + metaValue;
                     });
-
-                if (!fields[key]) fields[key] = [];
-
-                fields[key].push({
-                    meta: meta,
-                    value: results[3].split(';')
                 });
-                prevField = {
-                    key: key,
-                    index: fields[key].length - 1
-                };
-            } else if (prevField && prevField.key == 'photo' && line != 'END:VCARD') {
-                fields[prevField.key][prevField.index].value += line.trim();
+            }
+
+            line += ':';
+
+            if (typeof value.value === 'string') {
+                line += value.value;
+            } else {
+                line += value.value.join(';');
+            }
+
+            if (line.length > 75) {
+                var firstChunk = line.substr(0, 75),
+                    least = line.substr(75);
+                var splitted = least.match(/.{1,74}/g);
+                lines.push(firstChunk);
+                splitted.forEach(function (chunk) {
+                    lines.push(' ' + chunk);
+                })
+            } else {
+                lines.push(line);
             }
         });
+    });
 
-        return new VCard(fields, url);
-    };
+    lines.push(POSTFIX);
+    return lines.join('\r\n');
+}
 
-
-    namespace.VCard = VCard;
-})(typeof window !== 'undefined' ? window : module.exports);
+module.exports = {
+    parse: parse,
+    generate: generate
+};
