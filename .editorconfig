@@ -19,3 +19,6 @@ insert_final_newline = true
 
 [*.vcf]
 insert_final_newline = false
+
+[package.json]
+indent_size = 2

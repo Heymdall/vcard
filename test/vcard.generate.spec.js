@@ -140,4 +140,61 @@ describe('vCard.generate', function () {
         expect(arr[2].indexOf('UID:')).toEqual(0);
         expect(arr[3]).toEqual(POSTFIX);
     });
+
+    it('Should ignore undefined properties', function () {
+        var card = {
+            fn: undefined
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should ignore properties with undefined values', function () {
+        var card = {
+            fn: [
+                {value: undefined}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should ignore wrong formatted properties', function () {
+        var card = {
+            fn: {value: 'Wrong formatted'}
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should ignore wrong formatted meta properties', function () {
+        var card = {
+            tel: [
+                {value: '78884545247', meta: 'string are not allowed here'}
+            ],
+            email: [
+                {value: 'admin@example.com', meta: {type: 'string'}}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'TEL:78884545247',
+            'EMAIL:admin@example.com',
+            POSTFIX
+        ].join('\r\n'));
+    });
 });

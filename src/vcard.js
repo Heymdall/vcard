@@ -127,8 +127,16 @@
         }
 
         Object.keys(data).forEach(function (key) {
+            if (!data[key] || typeof data[key].forEach !== 'function') {
+                return;
+            }
             data[key].forEach(function (value) {
+                // ignore empty values
+                if (typeof value.value === 'undefined') {
+                    return;
+                }
                 line = '';
+
                 // add namespace if exists
                 if (value.namespace) {
                     line += value.namespace + '.';
@@ -136,8 +144,12 @@
                 line += key.toUpperCase();
 
                 // add meta properties
-                if (value.meta) {
+                if (typeof value.meta === 'object') {
                     Object.keys(value.meta).forEach(function (metaKey) {
+                        // values of meta tags must be an array
+                        if (typeof value.meta[metaKey].forEach !== 'function') {
+                            return;
+                        }
                         value.meta[metaKey].forEach(function (metaValue) {
                             line += ';' + metaKey.toUpperCase() + '=' + metaValue;
                         });

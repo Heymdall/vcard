@@ -3,7 +3,7 @@ vcard
 
 Simple js vCard parser/generator.
 
-** Example of usage:
+Example of usage:
 
 ```javascript
 var raw = 'BEGIN:VCARD\r\n' +
