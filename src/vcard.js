@@ -2,6 +2,11 @@
     var PREFIX = 'BEGIN:VCARD',
         POSTFIX = 'END:VCARD';
 
+    /**
+     * Return json representation of vCard
+     * @param {string} string raw vCard
+     * @returns {*}
+     */
     function parse(string) {
         var result = {},
             lines = string.split(/\r\n|\r|\n/),
@@ -92,9 +97,34 @@
         return result;
     }
 
-    function generate(data) {
+    var guid = (function() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return function() {
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        };
+    })();
+
+    /**
+     * Generate vCard representation af object
+     * @param {*} data
+     * @param {boolean=} addRequired determine if generator should add required properties (version and uid)
+     * @returns {string}
+     */
+    function generate(data, addRequired) {
         var lines = [PREFIX],
             line = '';
+
+        if (addRequired && !data.version) {
+            data.version = [{value: '3.0'}];
+        }
+        if (addRequired && !data.uid) {
+            data.uid = [{value: guid()}];
+        }
 
         Object.keys(data).forEach(function (key) {
             data[key].forEach(function (value) {

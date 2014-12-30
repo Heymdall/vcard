@@ -130,4 +130,14 @@ describe('vCard.generate', function () {
             POSTFIX
         ].join('\r\n'))
     });
+
+    it('Should add version and uid field', function () {
+        var string = vCard.generate({}, true),
+            arr = string.split('\r\n');
+
+        expect(arr[0]).toEqual(PREFIX);
+        expect(arr[1]).toEqual('VERSION:3.0');
+        expect(arr[2].indexOf('UID:')).toEqual(0);
+        expect(arr[3]).toEqual(POSTFIX);
+    });
 });
