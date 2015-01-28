@@ -132,7 +132,7 @@
             }
             data[key].forEach(function (value) {
                 // ignore empty values
-                if (typeof value.value === 'undefined') {
+                if (typeof value.value === 'undefined' || value.value == '') {
                     return;
                 }
                 line = '';
