@@ -135,6 +135,19 @@
                 if (typeof value.value === 'undefined' || value.value == '') {
                     return;
                 }
+                // ignore empty array values
+                if (value.value instanceof Array) {
+                    var empty = true;
+                    for (var i = 0; i < value.value.length; i++) {
+                        if (typeof value.value[i] !== 'undefined' && value.value[i] != '') {
+                            empty = false;
+                            break;
+                        }
+                    }
+                    if (empty) {
+                        return;
+                    }
+                }
                 line = '';
 
                 // add namespace if exists

@@ -167,6 +167,34 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
 
+    it('Should ignore properties with empty string values', function () {
+        var card = {
+            fn: [
+                {value: ''}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should ignore properties with array of empty values', function () {
+        var card = {
+            adr: [
+                {value: ['','','','','','','']}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
     it('Should ignore wrong formatted properties', function () {
         var card = {
             fn: {value: 'Wrong formatted'}
