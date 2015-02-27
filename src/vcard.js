@@ -75,10 +75,15 @@
             // semicolon-separated values
             if (value.match(/;/)) {
                 value = value.replace(/\\;/g, 'ΩΩΩ'); // easiest way, replace it with really rare character sequence
-                value = value.split(';');
-                value = value.map(function (item) {
-                    return item.replace(/ΩΩΩ/g, ';');
-                });
+                if (value.match(/;/)) {
+                    value = value.split(';');
+
+                    value = value.map(function (item) {
+                        return item.replace(/ΩΩΩ/g, ';');
+                    });
+                } else {
+                    value = value.replace(/ΩΩΩ/g, ';');
+                }
             }
 
             // Grouped properties
