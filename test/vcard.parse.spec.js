@@ -91,4 +91,13 @@ describe('vCard.parse', function () {
             {value: 'THIS/IS/SHITTY/BASE64ENCODED/PHOTO', meta: {encoding: ['b'], type: ['JPEG']}}
         ]);
     });
+
+    it('Should parse properties with \\n symbol', function () {
+        var raw = 'BEGIN:VCARD\nADR:Hello\\nmy address\nEND:VCARD',
+            card = vCard.parse(raw);
+
+        expect(card.adr).toEqual([
+            {value: 'Hello\nmy address'}
+        ]);
+    });
 });

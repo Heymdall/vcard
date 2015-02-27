@@ -225,4 +225,17 @@ describe('vCard.generate', function () {
             POSTFIX
         ].join('\r\n'));
     });
+    it('Should remove line breaks', function () {
+        var card = {
+            adr: [
+                {value: 'Hello\nmy address'}
+            ]
+        };
+        var string = vCard.generate(card);
+        expect(string).toEqual([
+            PREFIX,
+            'ADR:Hello\\nmy address',
+            POSTFIX
+        ].join('\r\n'));
+    });
 });

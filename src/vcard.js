@@ -62,6 +62,9 @@
                 });
             }
 
+            // values with \n
+            value = value.replace('\\n', '\n');
+
             // semicolon-separated values
             if (value.match(/;/)) {
                 value = value.split(';');
@@ -172,10 +175,10 @@
                 line += ':';
 
                 if (typeof value.value === 'string') {
-                    line += value.value;
+                    line += value.value.replace('\n', '\\n');
                 } else {
                     // complex values
-                    line += value.value.join(';');
+                    line += value.value.join(';').replace('\n', '\\n');
                 }
 
                 // line-length limit. Content lines
