@@ -25,8 +25,8 @@
                 continue;
             }
             pieces = lines[i].split(':');
-            key = pieces[0];
-            value = pieces[1];
+            key = pieces.shift();
+            value = pieces.join(':');
             namespace = false;
             meta = {};
 
@@ -103,7 +103,9 @@
                 newValue.namespace = namespace;
             }
 
-            key = key.toLowerCase();
+            if (key.indexOf('X-') !== 0) {
+                key = key.toLowerCase();
+            }
 
             if (typeof result[key] === 'undefined') {
                 result[key] = [newValue];
@@ -180,7 +182,7 @@
                 if (value.namespace) {
                     line += value.namespace + '.';
                 }
-                line += key.toUpperCase();
+                line += key.indexOf('X-') === 0 ? key : key.toUpperCase();
 
                 // add meta properties
                 if (typeof value.meta === 'object') {

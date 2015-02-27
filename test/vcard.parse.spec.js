@@ -114,4 +114,22 @@ describe('vCard.parse', function () {
             {value: '78884545247', meta: {type: ['HO;,\\ME'], pref: ['1']}}
         ]);
     });
+
+    it('Should parse url in property correctly', function () {
+        var raw = 'URL:http://akitov.info',
+            card = vCard.parse(raw);
+
+        expect(card.url).toEqual([
+            {value: 'http://akitov.info'}
+        ]);
+    });
+
+    it('Should not convert case of extended property names', function () {
+        var raw = 'item1.X-ABLabel:super',
+            card = vCard.parse(raw);
+
+        expect(card['X-ABLabel']).toEqual([
+            {value: 'super', namespace: 'item1'}
+        ]);
+    });
 });

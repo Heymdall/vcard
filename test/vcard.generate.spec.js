@@ -272,4 +272,19 @@ describe('vCard.generate', function () {
             POSTFIX
         ].join('\r\n'));
     });
+
+    it('Should not convert case on extended property names', function () {
+        var card = {
+            'X-ABLabel': [
+                {value: 'super', namespace: 'item1'}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'item1.X-ABLabel:super',
+            POSTFIX
+        ].join('\r\n'));
+    })
 });

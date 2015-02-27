@@ -1,6 +1,6 @@
 {
   "name": "vcard",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "authors": [
     "Aleksandr Kitov <kitov.nn@gmail.com>"
   ],
@@ -11,7 +11,9 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
+    "src/*",
+    "gulpfile.js",
+    "test/*",
     "node_modules"
   ]
 }
