@@ -228,13 +228,13 @@ describe('vCard.generate', function () {
     it('Should remove line breaks', function () {
         var card = {
             adr: [
-                {value: 'Hello\nmy\naddress'}
+                {value: ['sdfsdfsffsfsdsdfsfdfsdf\nfsdfdsfsdfqewe\nsdfsdf','','','',''], meta: {type: ['WORK']}}
             ]
         };
         var string = vCard.generate(card);
         expect(string).toEqual([
             PREFIX,
-            'ADR:Hello\\nmy\\naddress',
+            'ADR;TYPE=WORK:sdfsdfsffsfsdsdfsfdfsdf\\nfsdfdsfsdfqewe\\nsdfsdf;;;;',
             POSTFIX
         ].join('\r\n'));
     });

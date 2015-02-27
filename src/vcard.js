@@ -178,7 +178,7 @@
                     line += value.value.replace(/\n/g, '\\n');
                 } else {
                     // complex values
-                    line += value.value.join(';').replace('\n', '\\n');
+                    line += value.value.join(';').replace(/\n/g, '\\n');
                 }
 
                 // line-length limit. Content lines
