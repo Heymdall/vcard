@@ -1,17 +1,17 @@
 {
-    "name": "vcard",
-    "version": "0.1.4",
-    "authors": [
-        "Aleksandr Kitov <kitov.nn@gmail.com>"
-    ],
-    "description": "Simple vСard parser and generator",
-    "main": "dist/vcard.min.js",
-    "keywords": [
-        "vcard"
-    ],
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules"
-    ]
+  "name": "vcard",
+  "version": "0.2.0",
+  "authors": [
+    "Aleksandr Kitov <kitov.nn@gmail.com>"
+  ],
+  "description": "Simple vСard parser and generator",
+  "main": "dist/vcard.min.js",
+  "keywords": [
+    "vcard"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
 }
