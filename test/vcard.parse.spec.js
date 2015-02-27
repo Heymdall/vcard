@@ -100,4 +100,18 @@ describe('vCard.parse', function () {
             {value: 'Hello\nmy\naddress'}
         ]);
     });
+    it('Should parse properties with escaped semicolon, colon and backslash symbols', function () {
+        var raw = 'ADR:\\1\\;2\\,3\\;;;;;',
+            card = vCard.parse(raw);
+        expect(card.adr).toEqual([
+            {value: ['\\1;2,3;','','','','']}
+        ]);
+    });
+    it('Should parse properties with escaped semicolon, colon and backslash symbols in meta value', function () {
+        var raw = 'TEL;TYPE=HO\\;\\,\\ME;PREF=1:78884545247',
+            card = vCard.parse(raw);
+        expect(card.tel).toEqual([
+            {value: '78884545247', meta: {type: ['HO;,\\ME'], pref: ['1']}}
+        ]);
+    });
 });

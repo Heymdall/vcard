@@ -124,9 +124,9 @@ describe('vCard.generate', function () {
 
         expect(string).toEqual([
             PREFIX,
-            'NOTE:Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque d',
-            ' olores eum incidunt mollitia reiciendis sed sunt temporibus veniam veritat',
-            ' is voluptas.',
+            'NOTE:Lorem ipsum dolor sit amet\\, consectetur adipisicing elit. Doloremque ',
+            ' dolores eum incidunt mollitia reiciendis sed sunt temporibus veniam verita',
+            ' tis voluptas.',
             POSTFIX
         ].join('\r\n'))
     });
@@ -235,6 +235,40 @@ describe('vCard.generate', function () {
         expect(string).toEqual([
             PREFIX,
             'ADR;TYPE=WORK:sdfsdfsffsfsdsdfsfdfsdf\\nfsdfdsfsdfqewe\\nsdfsdf;;;;',
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should escape semicolon, colon and backslash in values', function () {
+        var card = {
+            tel: [
+                {value: '1;,2,;\\3;'}
+            ],
+            adr: [
+                {value: ['1;,2,;3;','','','','']}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'TEL:1\\;\\,2\\,\\;\\3\\;',
+            'ADR:1\\;\\,2\\,\\;3\\;;;;;',
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should escape semicolon, colon and backslash in meta fields', function () {
+        var card = {
+            tel: [
+                {value: '78884545247', meta: {type: ['HO;,\\ME'], pref: ['1']}}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'TEL;TYPE=HO\\;\\,\\ME;PREF=1:78884545247',
             POSTFIX
         ].join('\r\n'));
     });

@@ -49,7 +49,12 @@
 
             // meta fields in property
             if (key.match(/;/)) {
-                var metaArr = key.split(';');
+                key = key
+                    .replace(/\\;/g, 'ΩΩΩ')
+                    .replace(/\\,/, ',');
+                var metaArr = key.split(';').map(function (item) {
+                    return item.replace(/ΩΩΩ/g, ';');
+                });
                 key = metaArr.shift();
                 metaArr.forEach(function (item) {
                     var arr = item.split('=');
@@ -63,11 +68,17 @@
             }
 
             // values with \n
-            value = value.replace(/\\n/g, '\n');
+            value = value
+                .replace(/\\n/g, '\n')
+                .replace(/\\,/g, ',');
 
             // semicolon-separated values
             if (value.match(/;/)) {
+                value = value.replace(/\\;/g, 'ΩΩΩ'); // easiest way, replace it with really rare character sequence
                 value = value.split(';');
+                value = value.map(function (item) {
+                    return item.replace(/ΩΩΩ/g, ';');
+                });
             }
 
             // Grouped properties
@@ -129,6 +140,13 @@
             data.uid = [{value: guid()}];
         }
 
+        var escapeCharacters = function (v) {
+            return v
+                .replace(/\n/g, '\\n')
+                .replace(/;/g, '\\;')
+                .replace(/,/g, '\\,')
+        };
+
         Object.keys(data).forEach(function (key) {
             if (!data[key] || typeof data[key].forEach !== 'function') {
                 return;
@@ -167,18 +185,23 @@
                             return;
                         }
                         value.meta[metaKey].forEach(function (metaValue) {
-                            line += ';' + metaKey.toUpperCase() + '=' + metaValue;
+                            line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeCharacters(metaValue);
                         });
                     });
                 }
 
                 line += ':';
 
+
+
                 if (typeof value.value === 'string') {
-                    line += value.value.replace(/\n/g, '\\n');
+                    line += escapeCharacters(value.value);
                 } else {
                     // complex values
-                    line += value.value.join(';').replace(/\n/g, '\\n');
+                    value.value = value.value.map(function (item) {
+                        return escapeCharacters(item);
+                    });
+                    line += value.value.join(';');
                 }
 
                 // line-length limit. Content lines
