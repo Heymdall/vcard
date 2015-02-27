@@ -63,7 +63,7 @@
             }
 
             // values with \n
-            value = value.replace('\\n', '\n');
+            value = value.replace(/\\n/g, '\n');
 
             // semicolon-separated values
             if (value.match(/;/)) {
@@ -175,7 +175,7 @@
                 line += ':';
 
                 if (typeof value.value === 'string') {
-                    line += value.value.replace('\n', '\\n');
+                    line += value.value.replace(/\n/g, '\\n');
                 } else {
                     // complex values
                     line += value.value.join(';').replace('\n', '\\n');

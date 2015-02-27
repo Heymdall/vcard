@@ -93,11 +93,11 @@ describe('vCard.parse', function () {
     });
 
     it('Should parse properties with \\n symbol', function () {
-        var raw = 'BEGIN:VCARD\nADR:Hello\\nmy address\nEND:VCARD',
+        var raw = 'BEGIN:VCARD\nADR:Hello\\nmy\\naddress\nEND:VCARD',
             card = vCard.parse(raw);
 
         expect(card.adr).toEqual([
-            {value: 'Hello\nmy address'}
+            {value: 'Hello\nmy\naddress'}
         ]);
     });
 });
