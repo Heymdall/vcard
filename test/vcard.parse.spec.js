@@ -139,4 +139,12 @@ describe('vCard.parse', function () {
 
         expect(card['photo']).toEqual( [ { value : '', meta : { 'x-abcrop-rectangle' : [ 'ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA' ] } } ]);
     });
+
+    it('Should properly parse multi line PHOTO properties', function () {
+        var raw = 'PHOTO;X-ABCROP-RECTANGLE=ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA==;\n' +
+        ' ENCODING=b;TYPE=JPEG:/9j/4AAQSkZJRgABAQEASABIAAD/4QBARXhpZgAATU0AKgAAAAgAA',
+            card = vCard.parse(raw);
+
+        expect(card['photo']).toEqual( [ { value : '/9j/4AAQSkZJRgABAQEASABIAAD/4QBARXhpZgAATU0AKgAAAAgAA', meta : { encoding: ['b'], type: ['JPEG'], 'x-abcrop-rectangle' : [ 'ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA' ] } } ]);
+    });
 });

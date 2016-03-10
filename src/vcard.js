@@ -24,11 +24,7 @@
             if (lines[i].toUpperCase() == PREFIX || lines[i].toUpperCase() == POSTFIX) {
                 continue;
             }
-            pieces = lines[i].split(':');
-            key = pieces.shift();
-            value = pieces.join(':');
-            namespace = false;
-            meta = {};
+            var data = lines[i];
 
             /**
              * Check that next line continues current
@@ -42,10 +38,16 @@
             // next line should start with space or tab character
             if (isValueContinued(i)) {
                 while (isValueContinued(i)) {
-                    value += lines[i + 1].trim();
+                    data += lines[i + 1].trim();
                     i++;
                 }
             }
+
+            pieces = data.split(':');
+            key = pieces.shift();
+            value = pieces.join(':');
+            namespace = false;
+            meta = {};
 
             // meta fields in property
             if (key.match(/;/)) {
