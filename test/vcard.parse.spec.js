@@ -132,4 +132,11 @@ describe('vCard.parse', function () {
             {value: 'super', namespace: 'item1'}
         ]);
     });
+
+    it('Should not create empty meta keys', function () {
+        var raw = 'PHOTO;X-ABCROP-RECTANGLE=ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA==;',
+            card = vCard.parse(raw);
+
+        expect(card['photo']).toEqual( [ { value : '', meta : { 'x-abcrop-rectangle' : [ 'ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA' ] } } ]);
+    });
 });

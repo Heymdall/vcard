@@ -59,6 +59,9 @@
                 metaArr.forEach(function (item) {
                     var arr = item.split('=');
                     arr[0] = arr[0].toLowerCase();
+                    if (arr[0].length === 0) {
+                        return;
+                    }
                     if (meta[arr[0]]) {
                         meta[arr[0]].push(arr[1]);
                     } else {
@@ -148,6 +151,9 @@
         }
 
         var escapeCharacters = function (v) {
+            if (typeof v === 'undefined') {
+                return '';
+            }
             return v
                 .replace(/\n/g, '\\n')
                 .replace(/;/g, '\\;')
@@ -192,7 +198,9 @@
                             return;
                         }
                         value.meta[metaKey].forEach(function (metaValue) {
-                            line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeCharacters(metaValue);
+                            if (metaKey.length > 0) {
+                                line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeCharacters(metaValue);
+                            }
                         });
                     });
                 }
