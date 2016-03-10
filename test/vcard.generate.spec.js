@@ -286,5 +286,20 @@ describe('vCard.generate', function () {
             'item1.X-ABLabel:super',
             POSTFIX
         ].join('\r\n'));
-    })
+    });
+
+    it('Should not fail on undefined values', function () {
+        var card = {
+            tel: [
+                {value: '78884545247', meta: {'': [undefined], type: ['HO;,\\ME'], pref: ['1'] }}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'TEL;TYPE=HO\\;\\,\\ME;PREF=1:78884545247',
+            POSTFIX
+        ].join('\r\n'));
+    });
 });
