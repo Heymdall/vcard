@@ -302,4 +302,31 @@ describe('vCard.generate', function () {
             POSTFIX
         ].join('\r\n'));
     });
+
+    it('Should not change my data', function () {
+        var card = {
+            adr: [
+                {value: ['A', '1,2', 'b']  }
+            ],
+            nickname: [
+                {value: 'Mouse,Mikey'  }
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'ADR:A;1\\,2;b',
+            'NICKNAME:Mouse\\,Mikey',
+            POSTFIX
+        ].join('\r\n'));
+        expect(card).toEqual({
+            adr:[
+                {value: ['A', '1,2', 'b']}
+            ],
+            nickname: [
+                {value: 'Mouse,Mikey'  }
+            ]
+        });
+    });
 });
