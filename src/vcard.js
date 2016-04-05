@@ -215,10 +215,9 @@
                     line += escapeCharacters(value.value);
                 } else {
                     // complex values
-                    value.value = value.value.map(function (item) {
+                    line += value.value.map(function (item) {
                         return escapeCharacters(item);
-                    });
-                    line += value.value.join(';');
+                    }).join(';');
                 }
 
                 // line-length limit. Content lines
