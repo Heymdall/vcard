@@ -2,7 +2,10 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     jasmine = require('gulp-jasmine'),
-    bump = require('gulp-bump');
+    bump = require('gulp-bump'),
+    git = require('gulp-git'),
+    filter = require('gulp-filter'),
+    tagVersion = require('gulp-tag-version');
 
 
 gulp.task('build', function () {
@@ -12,12 +15,21 @@ gulp.task('build', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('bump', function () {
+function versionBump(type) {
     return gulp
-        .src('./*.json')
-        .pipe(bump())
+        .src(['packaje.json', 'bower.json'])
+        .pipe(bump({type: type}))
         .pipe(gulp.dest('./'))
-});
+        .pipe(git.commit('bumps package version'))
+        .pipe(filter('package.json'))
+        .pipe(tagVersion());
+}
+
+['patch', 'minor', 'major'].forEach(function (type) {
+    gulp.task('bump-' + type, function () {
+        return versionBump(type);
+    });
+})
 
 gulp.task('test', function () {
     return gulp.src('test/vcard.*.spec.js')
@@ -28,4 +40,4 @@ gulp.task('dev', function () {
     gulp.watch(['test/*', 'src/*.js'], ['test']);
 });
 
-gulp.task('default', ['test', 'build', 'bump']);
+gulp.task('default', ['test', 'build', 'bump-patch']);
