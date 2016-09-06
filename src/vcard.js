@@ -74,22 +74,9 @@
 
             // values with \n
             value = value
-                .replace(/\\n/g, '\n')
-                .replace(/\\,/g, ',');
+                .replace(/\\n/g, '\n');
 
-            // semicolon-separated values
-            if (value.match(/;/)) {
-                value = value.replace(/\\;/g, 'ΩΩΩ'); // easiest way, replace it with really rare character sequence
-                if (value.match(/;/)) {
-                    value = value.split(';');
-
-                    value = value.map(function (item) {
-                        return item.replace(/ΩΩΩ/g, ';');
-                    });
-                } else {
-                    value = value.replace(/ΩΩΩ/g, ';');
-                }
-            }
+            value = tryToSplit(value);
 
             // Grouped properties
             if (key.match(/\./)) {
@@ -123,6 +110,49 @@
         return result;
     }
 
+    var HAS_SEMICOLON_SEPARATOR = /[^\\];|^;/,
+        HAS_COMMA_SEPARATOR = /[^\\],|^,/;
+    /**
+     * Split value by "," or ";" and remove escape sequences for this separators
+     * @param {string} value
+     * @returns {string|string[]
+     */
+    function tryToSplit(value) {
+        if (value.match(HAS_SEMICOLON_SEPARATOR)) {
+            value = value.replace(/\\,/g, ',');
+            return splitValue(value, ';');
+        } else if (value.match(HAS_COMMA_SEPARATOR)) {
+            value = value.replace(/\\;/g, ';');
+            return splitValue(value, ',');
+        } else {
+            return value
+                .replace(/\\,/g, ',')
+                .replace(/\\;/g, ';');
+        }
+    }
+    /**
+     * Split vcard field value by separator
+     * @param {string|string[]} value
+     * @param {string} separator
+     * @returns {string|string[]}
+     */
+    function splitValue(value, separator) {
+        var separatorRegexp = new RegExp(separator);
+        var escapedSeparatorRegexp = new RegExp('\\\\' + separator, 'g');
+        // easiest way, replace it with really rare character sequence
+        value = value.replace(escapedSeparatorRegexp, 'ΩΩΩ');
+        if (value.match(separatorRegexp)) {
+            value = value.split(separator);
+
+            value = value.map(function (item) {
+                return item.replace(/ΩΩΩ/g, separator);
+            });
+        } else {
+            value = value.replace(/ΩΩΩ/g, separator);
+        }
+        return value;
+    }
+
     var guid = (function() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -134,6 +164,8 @@
                 s4() + '-' + s4() + s4() + s4();
         };
     })();
+
+    var COMMA_SEPARATED_FIELDS = ['nickname', 'related', 'categories', 'pid'];
 
     /**
      * Generate vCard representation af object
@@ -214,10 +246,13 @@
                 if (typeof value.value === 'string') {
                     line += escapeCharacters(value.value);
                 } else {
-                    // complex values
+                    // list-values
+                    var separator = COMMA_SEPARATED_FIELDS.indexOf(key) !== -1
+                        ? ','
+                        : ';';
                     line += value.value.map(function (item) {
                         return escapeCharacters(item);
-                    }).join(';');
+                    }).join(separator);
                 }
 
                 // line-length limit. Content lines

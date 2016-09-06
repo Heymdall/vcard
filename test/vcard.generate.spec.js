@@ -329,4 +329,23 @@ describe('vCard.generate', function () {
             ]
         });
     });
+
+    it('Should use comma separator for NICKNAME,RELATED, CATEGORIES and PID fields', function () {
+        var card = {
+            nickname: [
+                { value: ['Jim', 'Jimmie'] }
+            ],
+            categories: [
+                { value: ['INTERNET', 'INFORMATION TECHNOLOGY'] }
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'NICKNAME:Jim,Jimmie',
+            'CATEGORIES:INTERNET,INFORMATION TECHNOLOGY',
+            POSTFIX
+        ].join('\r\n'));
+    });
 });

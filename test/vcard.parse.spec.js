@@ -147,4 +147,22 @@ describe('vCard.parse', function () {
 
         expect(card['photo']).toEqual( [ { value : '/9j/4AAQSkZJRgABAQEASABIAAD/4QBARXhpZgAATU0AKgAAAAgAA', meta : { encoding: ['b'], type: ['JPEG'], 'x-abcrop-rectangle' : [ 'ABClipRect_1&0&0&671&671&Nh68TCRv7GErj8P8mk8qCA' ] } } ]);
     });
+
+    it('Should parse props with semicolon-separated values', function () {
+        var raw = 'ORG:ABC\, Inc.;North American Division;Marketing',
+            card = vCard.parse(raw);
+
+        expect(card['org']).toEqual([
+            { value: ['ABC, Inc.', 'North American Division', 'Marketing'] }
+        ]);
+    });
+
+    it('Should parse props with comma-separated values', function () {
+        var raw = 'NICKNAME:Jim,Jimmie',
+            card = vCard.parse(raw);
+
+        expect(card['nickname']).toEqual([
+            { value: ['Jim', 'Jimmie'] }
+        ]);
+    });
 });
