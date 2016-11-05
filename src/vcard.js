@@ -194,6 +194,15 @@
                 .replace(/,/g, '\\,')
         };
 
+        var escapeTypeCharacters = function(v) {
+            if (typeof v === 'undefined') {
+                return '';
+            }
+            return v
+                .replace(/\n/g, '\\n')
+                .replace(/;/g, '\\;')
+        };
+
         Object.keys(data).forEach(function (key) {
             if (!data[key] || typeof data[key].forEach !== 'function') {
                 return;
@@ -233,7 +242,12 @@
                         }
                         value.meta[metaKey].forEach(function (metaValue) {
                             if (metaKey.length > 0) {
-                                line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeCharacters(metaValue);
+                                if (metaKey.toUpperCase() === 'TYPE') {
+                                        // Do not escape the comma when it is the type property. This breaks a lot.
+                                        line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeTypeCharacters(metaValue);
+                                } else {
+                                        line += ';' + escapeCharacters(metaKey.toUpperCase()) + '=' + escapeCharacters(metaValue);
+                                }
                             }
                         });
                     });

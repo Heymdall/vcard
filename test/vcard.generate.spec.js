@@ -82,6 +82,21 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
 
+    it('Should not break comma seperated type keys', function () {
+        var card = {
+            tel: [
+                {value: '78884545247', meta: {type: ['HOME,PREF']}}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'TEL;TYPE=HOME,PREF:78884545247',
+            POSTFIX
+        ].join('\r\n'));
+    });
+
     it('Should generate vcard with multiple values of one metadata field', function () {
         var card = {
             tel: [
@@ -258,7 +273,7 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
 
-    it('Should escape semicolon, colon and backslash in meta fields', function () {
+    it('Should escape semicolon and backslash in meta fields', function () {
         var card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HO;,\\ME'], pref: ['1']}}
@@ -268,7 +283,7 @@ describe('vCard.generate', function () {
 
         expect(string).toEqual([
             PREFIX,
-            'TEL;TYPE=HO\\;\\,\\ME;PREF=1:78884545247',
+            'TEL;TYPE=HO\\;,\\ME;PREF=1:78884545247',
             POSTFIX
         ].join('\r\n'));
     });
@@ -298,7 +313,7 @@ describe('vCard.generate', function () {
 
         expect(string).toEqual([
             PREFIX,
-            'TEL;TYPE=HO\\;\\,\\ME;PREF=1:78884545247',
+            'TEL;TYPE=HO\\;,\\ME;PREF=1:78884545247',
             POSTFIX
         ].join('\r\n'));
     });
