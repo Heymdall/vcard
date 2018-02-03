@@ -165,4 +165,11 @@ describe('vCard.parse', function () {
             { value: ['Jim', 'Jimmie'] }
         ]);
     });
+
+    it('Should parse vcard with empty first name', function () {
+        var raw = 'FN:',
+            card = vCard.parse(raw);
+
+        expect(card.fn).toEqual([{value: ''}]);
+    });
 });
