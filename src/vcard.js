@@ -167,6 +167,8 @@
 
     var COMMA_SEPARATED_FIELDS = ['nickname', 'related', 'categories', 'pid'];
 
+    var REQUIRED_FIELDS = ['fn'];
+
     /**
      * Generate vCard representation af object
      * @param {*} data
@@ -208,10 +210,16 @@
                 return;
             }
             data[key].forEach(function (value) {
-                // ignore empty values
-                if (typeof value.value === 'undefined' || value.value == '') {
+                // ignore undefined values
+                if (typeof value.value === 'undefined') {
                     return;
                 }
+
+                // ignore empty values (unless it's a required field)
+                if (value.value == '' && REQUIRED_FIELDS.indexOf(key) === -1) {
+                    return;
+                }
+
                 // ignore empty array values
                 if (value.value instanceof Array) {
                     var empty = true;

@@ -182,9 +182,9 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
 
-    it('Should ignore properties with empty string values', function () {
+    it('Should ignore non-required properties with empty string values', function () {
         var card = {
-            fn: [
+            url: [
                 {value: ''}
             ]
         };
@@ -192,6 +192,21 @@ describe('vCard.generate', function () {
 
         expect(string).toEqual([
             PREFIX,
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should NOT ignore FN with empty string value', function () {
+        var card = {
+            fn: [
+                { value: '' }
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'FN:',
             POSTFIX
         ].join('\r\n'));
     });
