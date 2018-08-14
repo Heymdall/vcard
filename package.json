@@ -1,6 +1,6 @@
 {
   "name": "vcard-parser",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Simple vCard parser",
   "main": "lib/vcard.js",
   "directories": {
