@@ -19,8 +19,7 @@
     "release-patch": "npm version patch -m 'chore(*): patch version'",
     "release-minor": "npm version minor -m 'chore(*): minor version'",
     "release-major": "npm version major -m 'chore(*): major version'",
-    "postversion": "git push origin master && git push --tags && npm run publish",
-    "build": "gulp build"
+    "postversion": "git push origin master && git push --tags && npm publish"
   },
   "author": "Aleksandr Kitov <kitov.nn@gmail.com>",
   "license": "MIT"
