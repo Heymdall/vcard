@@ -1,4 +1,4 @@
-var vCard = require('../src/vcard').vCard;
+var vCard = require('../lib/vcard');
 
 describe('vCard.generate', function () {
     var PREFIX = 'BEGIN:VCARD',

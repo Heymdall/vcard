@@ -3,7 +3,7 @@ node_js:
     - "5.10"
 
 before_script:
-  - npm install
+  - yarn
 
 script:
-  - npm test
+  - yarn test
